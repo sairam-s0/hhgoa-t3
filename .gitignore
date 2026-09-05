@@ -15,3 +15,5 @@ cache/
 # Evidence Output (keep directory structure via .gitkeep)
 !artifacts/.gitkeep
 coding.md
+test_serpapi.py
+*.jpg
