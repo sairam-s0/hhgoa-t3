@@ -1,0 +1,21 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Node
+node_modules/
+artifacts/
+cache/
+
+# Environment & Secrets
+.env
+
+# Evidence Output (keep directory structure via .gitkeep)
+!artifacts/.gitkeep
+
+# Ignore scratch files and test scripts
+coding.md
+test_serpapi.py
+*.jpg
