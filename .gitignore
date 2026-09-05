@@ -14,8 +14,4 @@ cache/
 
 # Evidence Output (keep directory structure via .gitkeep)
 !artifacts/.gitkeep
-
-# Ignore scratch files and test scripts
 coding.md
-test_serpapi.py
-*.jpg

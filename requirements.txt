@@ -1,0 +1,12 @@
+deepface
+opencv-python
+numpy
+requests
+pillow
+python-dotenv
+beautifulsoup4
+web3
+fastapi
+uvicorn
+python-multipart
+pytest

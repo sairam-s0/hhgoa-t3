@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face-Chain-Verifier | Blockchain Evidence Anchoring</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="logo-group">
+                <div class="shield-icon">🛡️</div>
+                <div>
+                    <h1>FACE-CHAIN-VERIFIER</h1>
+                    <p class="subtitle">ArcFace Facial Verification & Hardhat Blockchain Evidence Anchor</p>
+                </div>
+            </div>
+            <div class="header-badges">
+                <span class="badge badge-tech">DeepFace + ArcFace</span>
+                <span class="badge badge-tech">SerpApi Lens</span>
+                <span class="badge badge-tech">Hardhat Node</span>
+            </div>
+        </header>
+
+        <!-- Main Layout (3-Column / Responsive Grid) -->
+        <main class="main-grid">
+            <!-- Column 1: Upload & Pipeline Trigger -->
+            <section class="card upload-card">
+                <h2>Upload Face Image</h2>
+                <p class="card-desc">Select or drop a target facial image to verify against web candidates.</p>
+                
+                <form id="verifyForm">
+                    <div class="drop-zone" id="dropZone">
+                        <input type="file" id="fileInput" name="file" accept="image/*" required hidden>
+                        <div class="drop-zone-content" id="dropContent">
+                            <div class="upload-icon">📸</div>
+                            <p class="upload-text">Drag & drop your input image here</p>
+                            <span class="upload-btn-label">Browse File</span>
+                        </div>
+                        <div class="preview-container hidden" id="previewContainer">
+                            <img id="imagePreview" src="" alt="Selected image preview">
+                            <span class="remove-btn" id="removeFileBtn">✕</span>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <label for="thresholdInput">Similarity Threshold:</label>
+                        <input type="number" id="thresholdInput" name="threshold" value="0.72" step="0.01" min="0" max="1">
+                    </div>
+
+                    <button type="submit" class="primary-btn" id="submitBtn">
+                        <span>Run Verification Pipeline</span>
+                        <div class="spinner hidden" id="btnSpinner"></div>
+                    </button>
+                </form>
+            </section>
+
+            <!-- Column 2: Pipeline Status & Verification Output -->
+            <section class="card results-card">
+                <h2>Pipeline Output & Verification</h2>
+                
+                <div id="idleState" class="empty-state">
+                    <div class="empty-icon">⚡</div>
+                    <p>Upload an image and run the pipeline to view real-time face detection, matching, canonical SHA-256 evidence, and Hardhat blockchain receipt.</p>
+                </div>
+
+                <div id="loadingState" class="loading-container hidden">
+                    <div class="pipeline-loader">
+                        <div class="loader-step active" id="step1">1. Face Detection & ArcFace Embedding...</div>
+                        <div class="loader-step" id="step2">2. SerpApi Google Lens Reverse Search...</div>
+                        <div class="loader-step" id="step3">3. Candidate Download & Face Verification...</div>
+                        <div class="loader-step" id="step4">4. Canonical SHA-256 & Hardhat Blockchain...</div>
+                    </div>
+                </div>
+
+                <div id="resultState" class="result-container hidden">
+                    <!-- Status Banner -->
+                    <div class="status-banner" id="statusBanner">
+                        <div class="status-icon" id="statusIcon">✓</div>
+                        <div>
+                            <h3 id="statusTitle">VERIFIED</h3>
+                            <p id="statusDesc">Evidence anchored on Hardhat blockchain & validated.</p>
+                        </div>
+                    </div>
+
+                    <!-- Metrics Grid -->
+                    <div class="metrics-grid">
+                        <div class="metric-box">
+                            <span class="metric-label">Best Similarity</span>
+                            <span class="metric-value" id="metricSim">0.0000</span>
+                        </div>
+                        <div class="metric-box">
+                            <span class="metric-label">Detected Faces</span>
+                            <span class="metric-value" id="metricFaces">1</span>
+                        </div>
+                        <div class="metric-box">
+                            <span class="metric-label">Search Provider</span>
+                            <span class="metric-value">SerpApi Lens</span>
+                        </div>
+                    </div>
+
+                    <!-- Matched Source -->
+                    <div class="info-block">
+                        <h4>Matched Source Page</h4>
+                        <a id="matchedUrl" href="#" target="_blank" class="url-link">https://...</a>
+                    </div>
+
+                    <!-- Evidence JSON -->
+                    <div class="info-block">
+                        <h4>Canonical Evidence JSON (SHA-256)</h4>
+                        <div class="hash-badge" id="evidenceHash">SHA256: ------------------</div>
+                        <pre class="code-block" id="evidenceJson"></pre>
+                    </div>
+
+                    <!-- Blockchain Receipt -->
+                    <div class="info-block">
+                        <h4>Hardhat Blockchain Receipt</h4>
+                        <div class="receipt-grid">
+                            <div><strong>Tx Hash:</strong> <span id="txHash" class="mono">0x...</span></div>
+                            <div><strong>Block #:</strong> <span id="blockNum" class="mono">42</span></div>
+                            <div><strong>Contract:</strong> <span id="contractAddr" class="mono">0x...</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Re-verification Badges -->
+                    <div class="reverify-box">
+                        <h4>On-Chain Re-verification</h4>
+                        <div class="check-list">
+                            <div class="check-item"><span>✓</span> Hash Reconstructed</div>
+                            <div class="check-item"><span>✓</span> Found in Solidity Contract State</div>
+                            <div class="check-item"><span>✓</span> SHA-256 Hashes Identical</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Column 3: Scrollable Candidate Visual Matches Gallery -->
+            <section class="card candidates-card">
+                <div class="candidates-header">
+                    <h2>Visual Candidates</h2>
+                    <span class="cand-count-badge" id="candCountBadge">0 Found</span>
+                </div>
+                <p class="card-desc">Top 10 candidates retrieved from SerpApi Google Lens & ranked by ArcFace cosine similarity.</p>
+
+                <div id="candidatesList" class="candidates-scroll-list">
+                    <div class="empty-candidates" id="emptyCandidates">
+                        <div class="gallery-icon">🖼️</div>
+                        <p>Discovered candidate images and match scores will appear here after search execution.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
